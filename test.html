@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار مولد الشهادات</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        #result {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        #certificateImage {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: 20px;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .success {
+            background: #efe;
+            color: #3c3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 اختبار مولد الشهادات</h1>
+        
+        <form id="certificateForm">
+            <div class="form-group">
+                <label for="studentName">اسم الطالب</label>
+                <input type="text" id="studentName" value="أحمد محمد علي" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="courseName">اسم الدورة</label>
+                <input type="text" id="courseName" value="تطوير تطبيقات Flutter" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="instructorName">اسم المدرب</label>
+                <input type="text" id="instructorName" value="د. محمد علي" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">التاريخ</label>
+                <input type="text" id="date" value="15 يناير 2026" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="language">اللغة</label>
+                <select id="language" required>
+                    <option value="ar">العربية</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="submitBtn">
+                توليد الشهادة
+            </button>
+        </form>
+        
+        <div id="result"></div>
+    </div>
+    
+    <script>
+        document.getElementById('certificateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const result = document.getElementById('result');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span> جاري التوليد...';
+            result.innerHTML = '';
+            
+            // Collect form data
+            const data = {
+                studentName: document.getElementById('studentName').value,
+                courseName: document.getElementById('courseName').value,
+                instructorName: document.getElementById('instructorName').value,
+                date: document.getElementById('date').value,
+                language: document.getElementById('language').value
+            };
+            
+            try {
+                const response = await fetch('index.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const responseData = await response.json();
+                
+                if (responseData.success) {
+                    result.innerHTML = `
+                        <div class="success">✅ تم توليد الشهادة بنجاح!</div>
+                        <img id="certificateImage" src="${responseData.image}" alt="Certificate">
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <div class="error">❌ خطأ: ${responseData.error}</div>
+                    `;
+                }
+            } catch (error) {
+                result.innerHTML = `
+                    <div class="error">❌ خطأ في الاتصال: ${error.message}</div>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'توليد الشهادة';
+            }
+        });
+    </script>
+</body>
+</html>

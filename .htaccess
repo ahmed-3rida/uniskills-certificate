@@ -1,0 +1,17 @@
+# Enable CORS
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type"
+</IfModule>
+
+# Enable GD Library (usually enabled by default)
+<IfModule mod_php.c>
+    php_value extension gd
+</IfModule>
+
+# Protect sensitive files
+<FilesMatch "\.(md|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

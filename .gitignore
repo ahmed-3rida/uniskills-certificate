@@ -1,0 +1,15 @@
+# Ignore font files (download separately)
+fonts/*.ttf
+fonts/*.otf
+
+# Ignore test outputs
+*.log
+*.tmp
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Keep folder structure
+!fonts/README.md
+!templates/README.md
