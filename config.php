@@ -7,29 +7,29 @@
 return [
     // Text positions (scaled automatically based on image size)
     'positions' => [
-        'student_name' => [
-            'y' => 105,           // Y position from top
-            'font_size' => 30,    // Font size
-            'centered' => true,   // Center horizontally
-        ],
-        'course_name' => [
-            'y' => 148,
-            'font_size' => 16,
-            'centered' => true,
-        ],
-        'date' => [
-            'x' => 75,            // X position from left
-            'y_from_bottom' => 35, // Y position from bottom
-            'font_size' => 14,
-            'centered' => false,
-        ],
-        'instructor' => [
-            'x_from_right' => 70, // X position from right
-            'y_from_bottom' => 35,
-            'font_size' => 14,
-            'centered' => false,
-        ],
+    'student_name' => [
+        'y' => 132,
+        'font_size' => 11,
+        'centered' => true,
     ],
+    'course_name' => [
+        'y' => 173,
+        'font_size' => 10,
+        'centered' => true,
+    ],
+    'date' => [
+        'x' => 83,
+        'y_from_bottom' => 40,
+        'font_size' => 5,
+        'centered' => false,
+    ],
+    'instructor' => [
+        'x_from_right' => 83,
+        'y_from_bottom' => 40,
+        'font_size' => 5,
+        'centered' => false,
+    ],
+],
     
     // Image settings
     'image' => [
