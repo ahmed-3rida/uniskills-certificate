@@ -364,7 +364,11 @@
         }
         
         function generateCode() {
-            const code = `'positions' => [
+            const lang = currentLanguage;
+            const configKey = lang === 'ar' ? 'positions_ar' : 'positions_en';
+            
+            const code = `// ${lang === 'ar' ? 'مواضع العربي' : 'English positions'}
+'${configKey}' => [
     'student_name' => [
         'y' => ${document.getElementById('studentY').value},
         'font_size' => ${document.getElementById('studentFontSize').value},
@@ -393,7 +397,8 @@
             output.textContent = code;
             output.style.display = 'block';
             
-            document.getElementById('message').innerHTML = '<div class="success">✅ انسخ الكود أدناه وضعه في config.php</div>';
+            const langName = lang === 'ar' ? 'العربي' : 'الإنجليزي';
+            document.getElementById('message').innerHTML = `<div class="success">✅ انسخ الكود أدناه وضعه في config.php تحت ${langName}</div>`;
         }
     </script>
 </body>
