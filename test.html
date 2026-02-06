@@ -197,7 +197,23 @@
                     body: JSON.stringify(data)
                 });
                 
-                const responseData = await response.json();
+                // Get response text first to debug
+                const responseText = await response.text();
+                console.log('Response:', responseText);
+                
+                let responseData;
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (parseError) {
+                    result.innerHTML = `
+                        <div class="error">
+                            ❌ خطأ في تحليل الاستجابة<br>
+                            <small>الاستجابة ليست JSON صحيح. تحقق من Console للتفاصيل.</small><br>
+                            <small>Response: ${responseText.substring(0, 200)}...</small>
+                        </div>
+                    `;
+                    return;
+                }
                 
                 if (responseData.success) {
                     result.innerHTML = `
@@ -211,8 +227,12 @@
                 }
             } catch (error) {
                 result.innerHTML = `
-                    <div class="error">❌ خطأ في الاتصال: ${error.message}</div>
+                    <div class="error">
+                        ❌ خطأ في الاتصال: ${error.message}<br>
+                        <small>تحقق من Console للمزيد من التفاصيل</small>
+                    </div>
                 `;
+                console.error('Full error:', error);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'توليد الشهادة';

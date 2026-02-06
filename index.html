@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد الشهادات - Certificate Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .btn {
+            display: block;
+            padding: 18px 30px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .info {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+        
+        .info h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .info ul {
+            list-style: none;
+            text-align: right;
+        }
+        
+        .info li {
+            padding: 8px 0;
+            color: #666;
+        }
+        
+        .info li::before {
+            content: "✓ ";
+            color: #4caf50;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🎓</div>
+        <h1>مولد الشهادات</h1>
+        <p class="subtitle">Certificate Generator API</p>
+        
+        <div class="buttons">
+            <a href="debug.php" class="btn btn-success">
+                🔍 فحص النظام - System Check
+            </a>
+            <a href="test.html" class="btn btn-primary">
+                🧪 اختبار التوليد - Test Generator
+            </a>
+            <a href="START_HERE_AR.md" class="btn btn-secondary">
+                📖 دليل البدء - Getting Started
+            </a>
+        </div>
+        
+        <div class="info">
+            <h3>📋 الخطوات السريعة</h3>
+            <ul>
+                <li>افتح صفحة الفحص للتأكد من كل شيء</li>
+                <li>جرب توليد شهادة من صفحة الاختبار</li>
+                <li>اقرأ الدليل للربط مع التطبيق</li>
+                <li>استخدم API في مشروعك</li>
+            </ul>
+        </div>
+        
+        <div class="info" style="margin-top: 20px;">
+            <h3>🔗 API Endpoint</h3>
+            <code style="background: white; padding: 10px; display: block; border-radius: 5px; color: #667eea; font-size: 16px;">
+                POST /index.php
+            </code>
+        </div>
+        
+        <div class="footer">
+            <p>مفتوح المصدر • Open Source</p>
+            <p>جاهز للاستخدام • Ready to Use</p>
+        </div>
+    </div>
+</body>
+</html>
