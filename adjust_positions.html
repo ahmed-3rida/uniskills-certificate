@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ضبط مواضع النصوص</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+        }
+        
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .preview {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        input[type="number"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: #5568d3;
+        }
+        
+        .btn-secondary {
+            background: #4caf50;
+        }
+        
+        .btn-secondary:hover {
+            background: #45a049;
+        }
+        
+        #certificatePreview {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .success {
+            background: #efe;
+            color: #3c3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .code-output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .language-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 10px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <h1>⚙️ ضبط المواضع</h1>
+            
+            <div class="language-tabs">
+                <button class="tab active" onclick="switchLanguage('ar')">عربي</button>
+                <button class="tab" onclick="switchLanguage('en')">English</button>
+            </div>
+            
+            <div class="section">
+                <h3>📝 البيانات التجريبية</h3>
+                <div class="control-group">
+                    <label>اسم الطالب</label>
+                    <input type="text" id="studentName" value="أحمد محمد علي">
+                </div>
+                <div class="control-group">
+                    <label>اسم الدورة</label>
+                    <input type="text" id="courseName" value="تطوير تطبيقات Flutter">
+                </div>
+                <div class="control-group">
+                    <label>اسم المدرب</label>
+                    <input type="text" id="instructorName" value="د. محمد علي">
+                </div>
+                <div class="control-group">
+                    <label>التاريخ</label>
+                    <input type="text" id="date" value="15 يناير 2026">
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>👤 موضع اسم الطالب</h3>
+                <div class="control-group">
+                    <label>Y (من الأعلى)</label>
+                    <input type="number" id="studentY" value="105">
+                </div>
+                <div class="control-group">
+                    <label>حجم الخط</label>
+                    <input type="number" id="studentFontSize" value="30">
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>📚 موضع اسم الدورة</h3>
+                <div class="control-group">
+                    <label>Y (من الأعلى)</label>
+                    <input type="number" id="courseY" value="148">
+                </div>
+                <div class="control-group">
+                    <label>حجم الخط</label>
+                    <input type="number" id="courseFontSize" value="16">
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>📅 موضع التاريخ</h3>
+                <div class="control-group">
+                    <label>X (من اليسار)</label>
+                    <input type="number" id="dateX" value="75">
+                </div>
+                <div class="control-group">
+                    <label>Y (من الأسفل)</label>
+                    <input type="number" id="dateYBottom" value="35">
+                </div>
+                <div class="control-group">
+                    <label>حجم الخط</label>
+                    <input type="number" id="dateFontSize" value="14">
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>👨‍🏫 موضع اسم المدرب</h3>
+                <div class="control-group">
+                    <label>X (من اليمين)</label>
+                    <input type="number" id="instructorXRight" value="70">
+                </div>
+                <div class="control-group">
+                    <label>Y (من الأسفل)</label>
+                    <input type="number" id="instructorYBottom" value="35">
+                </div>
+                <div class="control-group">
+                    <label>حجم الخط</label>
+                    <input type="number" id="instructorFontSize" value="14">
+                </div>
+            </div>
+            
+            <button class="btn" onclick="generatePreview()">🔄 تحديث المعاينة</button>
+            <button class="btn btn-secondary" onclick="generateCode()">📋 توليد الكود</button>
+            
+            <div id="message"></div>
+            <div id="codeOutput" class="code-output" style="display: none;"></div>
+        </div>
+        
+        <div class="preview">
+            <h1>👁️ المعاينة</h1>
+            <div id="previewContainer">
+                <div class="loading">اضغط "تحديث المعاينة" لرؤية النتيجة</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentLanguage = 'ar';
+        
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update sample data
+            if (lang === 'en') {
+                document.getElementById('studentName').value = 'Ahmed Mohamed Ali';
+                document.getElementById('courseName').value = 'Flutter Development';
+                document.getElementById('instructorName').value = 'Dr. Mohamed Ali';
+                document.getElementById('date').value = 'January 15, 2026';
+            } else {
+                document.getElementById('studentName').value = 'أحمد محمد علي';
+                document.getElementById('courseName').value = 'تطوير تطبيقات Flutter';
+                document.getElementById('instructorName').value = 'د. محمد علي';
+                document.getElementById('date').value = '15 يناير 2026';
+            }
+        }
+        
+        async function generatePreview() {
+            const container = document.getElementById('previewContainer');
+            const message = document.getElementById('message');
+            
+            container.innerHTML = '<div class="loading">جاري التوليد...</div>';
+            message.innerHTML = '';
+            
+            const data = {
+                studentName: document.getElementById('studentName').value,
+                courseName: document.getElementById('courseName').value,
+                instructorName: document.getElementById('instructorName').value,
+                date: document.getElementById('date').value,
+                language: currentLanguage,
+                positions: {
+                    student_name: {
+                        y: parseInt(document.getElementById('studentY').value),
+                        font_size: parseInt(document.getElementById('studentFontSize').value),
+                        centered: true
+                    },
+                    course_name: {
+                        y: parseInt(document.getElementById('courseY').value),
+                        font_size: parseInt(document.getElementById('courseFontSize').value),
+                        centered: true
+                    },
+                    date: {
+                        x: parseInt(document.getElementById('dateX').value),
+                        y_from_bottom: parseInt(document.getElementById('dateYBottom').value),
+                        font_size: parseInt(document.getElementById('dateFontSize').value),
+                        centered: false
+                    },
+                    instructor: {
+                        x_from_right: parseInt(document.getElementById('instructorXRight').value),
+                        y_from_bottom: parseInt(document.getElementById('instructorYBottom').value),
+                        font_size: parseInt(document.getElementById('instructorFontSize').value),
+                        centered: false
+                    }
+                }
+            };
+            
+            try {
+                const response = await fetch('index.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    container.innerHTML = `<img id="certificatePreview" src="${result.image}" alt="Certificate Preview">`;
+                    message.innerHTML = '<div class="success">✅ تم التوليد بنجاح!</div>';
+                } else {
+                    container.innerHTML = '<div class="loading">فشل التوليد</div>';
+                    message.innerHTML = `<div class="error">❌ خطأ: ${result.error}</div>`;
+                }
+            } catch (error) {
+                container.innerHTML = '<div class="loading">فشل التوليد</div>';
+                message.innerHTML = `<div class="error">❌ خطأ: ${error.message}</div>`;
+            }
+        }
+        
+        function generateCode() {
+            const code = `'positions' => [
+    'student_name' => [
+        'y' => ${document.getElementById('studentY').value},
+        'font_size' => ${document.getElementById('studentFontSize').value},
+        'centered' => true,
+    ],
+    'course_name' => [
+        'y' => ${document.getElementById('courseY').value},
+        'font_size' => ${document.getElementById('courseFontSize').value},
+        'centered' => true,
+    ],
+    'date' => [
+        'x' => ${document.getElementById('dateX').value},
+        'y_from_bottom' => ${document.getElementById('dateYBottom').value},
+        'font_size' => ${document.getElementById('dateFontSize').value},
+        'centered' => false,
+    ],
+    'instructor' => [
+        'x_from_right' => ${document.getElementById('instructorXRight').value},
+        'y_from_bottom' => ${document.getElementById('instructorYBottom').value},
+        'font_size' => ${document.getElementById('instructorFontSize').value},
+        'centered' => false,
+    ],
+],`;
+            
+            const output = document.getElementById('codeOutput');
+            output.textContent = code;
+            output.style.display = 'block';
+            
+            document.getElementById('message').innerHTML = '<div class="success">✅ انسخ الكود أدناه وضعه في config.php</div>';
+        }
+    </script>
+</body>
+</html>

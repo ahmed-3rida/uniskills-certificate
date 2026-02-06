@@ -90,8 +90,11 @@ try {
     // Calculate scale factor
     $scale = $width / $config['image']['base_width'];
 
-    // Function to write centered text
+    // Function to write centered text with UTF-8 support
     function writeCenteredText($image, $fontSize, $y, $text, $color, $fontPath, $width) {
+        // Convert text to UTF-8 if needed
+        $text = mb_convert_encoding($text, 'UTF-8', 'auto');
+        
         if ($fontPath && file_exists($fontPath)) {
             // Get text bounding box
             $bbox = @imagettfbbox($fontSize, 0, $fontPath, $text);
@@ -99,26 +102,49 @@ try {
                 $textWidth = abs($bbox[4] - $bbox[0]);
                 $x = ($width - $textWidth) / 2;
                 @imagettftext($image, $fontSize, 0, $x, $y, $color, $fontPath, $text);
+                return true;
             }
+        }
+        
+        // Fallback: use imagestring for ASCII only
+        // For Arabic, we need TTF font
+        if (preg_match('/[\x{0600}-\x{06FF}]/u', $text)) {
+            // Arabic text without font - draw placeholder
+            $placeholderWidth = imagefontwidth(5) * 10;
+            $x = ($width - $placeholderWidth) / 2;
+            imagestring($image, 5, $x, $y, '[Arabic]', $color);
         } else {
-            // Fallback to built-in font
             $textWidth = imagefontwidth(5) * strlen($text);
             $x = ($width - $textWidth) / 2;
             imagestring($image, 5, $x, $y, $text, $color);
         }
+        return false;
     }
 
-    // Function to write text at specific position
+    // Function to write text at specific position with UTF-8 support
     function writeText($image, $fontSize, $x, $y, $text, $color, $fontPath) {
+        // Convert text to UTF-8 if needed
+        $text = mb_convert_encoding($text, 'UTF-8', 'auto');
+        
         if ($fontPath && file_exists($fontPath)) {
             @imagettftext($image, $fontSize, 0, $x, $y, $color, $fontPath, $text);
-        } else {
+            return true;
+        }
+        
+        // Fallback for non-Arabic text
+        if (!preg_match('/[\x{0600}-\x{06FF}]/u', $text)) {
             imagestring($image, 3, $x, $y, $text, $color);
         }
+        return false;
     }
 
     // Add text to certificate using configuration
     $positions = $config['positions'];
+    
+    // Allow custom positions from request (for testing)
+    if (isset($data['positions']) && is_array($data['positions'])) {
+        $positions = array_replace_recursive($positions, $data['positions']);
+    }
 
     // Student Name
     if ($positions['student_name']['centered']) {
